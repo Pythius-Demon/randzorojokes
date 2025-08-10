@@ -1,5 +1,5 @@
 // api/random.js
-export default function handler(req, res) {
+module.exports = (req, res) => {
   const images = [
     "https://files.catbox.moe/horqcv.png",
     "https://files.catbox.moe/pn388z.png",
@@ -10,12 +10,13 @@ export default function handler(req, res) {
     "https://files.catbox.moe/zdoy55.png"
   ];
 
-  // Pick random image
   const randomImage = images[Math.floor(Math.random() * images.length)];
 
-  // Append cache-busting query
-  const cacheBustedUrl = `${randomImage}?nocache=${Date.now()}`;
+  // Add unique timestamp param to bust Discord cache
+  const urlWithTimestamp = `${randomImage}?ts=${Date.now()}`;
 
-  // Redirect to the random image
-  res.redirect(cacheBustedUrl);
-}
+  res.setHeader('Cache-Control', 'no-store');
+  res.statusCode = 302;
+  res.setHeader('Location', urlWithTimestamp);
+  res.end();
+};
