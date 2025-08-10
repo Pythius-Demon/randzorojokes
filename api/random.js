@@ -10,9 +10,10 @@ module.exports = (req, res) => {
   ];
 
   const randomImage = images[Math.floor(Math.random() * images.length)];
+  const cacheBuster = `?v=${Date.now()}`;
 
   res.setHeader('Cache-Control', 'no-store');
   res.statusCode = 302;
-  res.setHeader('Location', randomImage);
+  res.setHeader('Location', randomImage + cacheBuster);
   res.end();
 };
