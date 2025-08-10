@@ -1,4 +1,5 @@
-module.exports = (req, res) => {
+// api/random.js
+export default function handler(req, res) {
   const images = [
     "https://files.catbox.moe/horqcv.png",
     "https://files.catbox.moe/pn388z.png",
@@ -9,11 +10,12 @@ module.exports = (req, res) => {
     "https://files.catbox.moe/zdoy55.png"
   ];
 
+  // Pick random image
   const randomImage = images[Math.floor(Math.random() * images.length)];
-  const cacheBuster = `?v=${Date.now()}`;
 
-  res.setHeader('Cache-Control', 'no-store');
-  res.statusCode = 302;
-  res.setHeader('Location', randomImage + cacheBuster);
-  res.end();
-};
+  // Append cache-busting query
+  const cacheBustedUrl = `${randomImage}?nocache=${Date.now()}`;
+
+  // Redirect to the random image
+  res.redirect(cacheBustedUrl);
+}
