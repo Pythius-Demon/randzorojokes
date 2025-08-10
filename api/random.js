@@ -11,9 +11,6 @@ export default function handler(req, res) {
 
   const randomImage = images[Math.floor(Math.random() * images.length)];
 
-  res.writeHead(302, {
-    Location: randomImage,
-    'Cache-Control': 'no-store' // prevents caching
-  });
-  res.end();
+  res.setHeader('Cache-Control', 'no-store');
+  res.redirect(randomImage);
 }
